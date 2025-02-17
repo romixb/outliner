@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VPN Extension UI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+        }
+        .container {
+            width: 300px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 20px;
+        }
+        .header {
+            background: #1d1d1d;
+            color: white;
+            padding: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 10px 10px 0 0;
+        }
+        .circle-container {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 20px auto;
+        }
+        .circle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(from 180deg, gray 0deg, white 180deg);
+        }
+        .circle:nth-child(2) {
+            width: 70%;  /* Reduced from 80% to 70% */
+            height: 70%; /* Reduced from 80% to 70% */
+            top: 15%;
+            left: 15%;
+        }
+
+        .circle:nth-child(3) {
+            width: 40%;  /* Reduced from 60% to 40% */
+            height: 40%; /* Reduced from 60% to 40% */
+            top: 30%;
+            left: 30%;
+        }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .status {
+            margin-top: 10px;
+            font-size: 14px;
+            color: gray;
+        }
+        .connect-btn {
+            border: none;
+            background: none;
+            color: #26a69a;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">Outline</div>
+    <div>Сервер Outline</div>
+    <div>77.238.225.163:443</div>
+    <div class="circle-container" id="circleContainer">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+    </div>
+    <div class="status" id="status">Disconnected</div>
+    <button class="connect-btn" id="connectBtn">CONNECT</button>
+</div>
+
+<script>
+    const circles = document.querySelectorAll(".circle");
+    const statusText = document.getElementById("status");
+    const connectBtn = document.getElementById("connectBtn");
+    let isConnected = false;
+
+    function startAnimation() {
+        circles[2].style.animation = "rotate 1.5s cubic-bezier(0.73, 0.2, 0.38, 0.96)";
+        setTimeout(() => {
+            circles[1].style.animation = "rotate 1.5s cubic-bezier(0.73, 0.2, 0.38, 0.96)";
+        }, 333);
+        setTimeout(() => {
+            circles[0].style.animation = "rotate 1.5s cubic-bezier(0.73, 0.2, 0.38, 0.96)";
+            setTimeout(() => {
+                circles[0].style.animation = "none";
+                checkConnection();
+            }, 1300);
+        }, 666);
+    }
+    function checkConnection() {
+        if (!isConnected) {
+            startAnimation();
+        } else {
+            circles.forEach(circle => circle.style.background = "conic-gradient(#88f0c1 0deg, white 90deg)");
+            statusText.textContent = "Connected";
+            connectBtn.textContent = "DISCONNECT";
+        }
+    }
+
+    connectBtn.addEventListener("click", () => {
+        if (!isConnected) {
+            statusText.textContent = "Connecting...";
+            connectBtn.textContent = "";
+            startAnimation();
+            setTimeout(() => {
+                isConnected = true;
+                checkConnection();
+            }, 4000);
+        } else {
+            isConnected = false;
+            circles.forEach(circle => circle.style.background = "");
+            statusText.textContent = "Disconnected";
+            connectBtn.textContent = "CONNECT";
+        }
+    });
+</script>
+</body>
+</html>

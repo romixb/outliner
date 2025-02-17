@@ -1,0 +1,12 @@
+{
+  "server": "SERVER_IP",
+  "server_port": 443,
+  "local_address": "0.0.0.0",
+  "local_port": 1080,
+  "password": "PASS",
+  "method": "chacha20-ietf-poly1305",
+  "timeout": 300,
+  "mode":"tcp_and_udp",
+  "fast_open":true,
+  "reuse_port":true
+}
